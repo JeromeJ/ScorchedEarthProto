@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 #if UNITY_EDITOR
@@ -13,6 +10,8 @@ public class TCPSphere : DualBehaviour
 {
     #region Public Members
 
+    public static char s_separator = ' ';
+
     #endregion
 
     #region Public void
@@ -20,12 +19,7 @@ public class TCPSphere : DualBehaviour
     #endregion
 
     #region System
-
-    public static char s_separator = ' ';
-
-    protected static Socket s;
-    protected SocketAsyncEventArgs test;
-
+    
     protected void Start()
     {
         s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -60,7 +54,7 @@ public class TCPSphere : DualBehaviour
         Debug.Log(str);
 
         // TrimEnd removes extraneous leading spaces
-        string lastSentScale = str.TrimEnd(s_separator).Split(s_separator).Last();
+        string lastSentScale = str.TrimEnd(s_separator).Split(s_separator).LastOrDefault();
         float newScale = float.Parse(lastSentScale);
 
         GameObject.Find("Sphere").transform.localScale = new Vector3(newScale, newScale, newScale);
@@ -92,6 +86,9 @@ public class TCPSphere : DualBehaviour
     #endregion
 
     #region Private and Protected Members
+
+    protected static Socket s;
+    protected SocketAsyncEventArgs test;
 
     #endregion
 }
